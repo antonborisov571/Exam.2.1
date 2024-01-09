@@ -38,7 +38,7 @@ public class Fight : IFight
 
         var round = InitRound(attacker, defender);
 
-        var throws = int.Parse(attacker.Damage.Split('d')[0]);
+        var countAttacks = int.Parse(attacker.Damage.Split('d')[0]);
         var dice = int.Parse(attacker.Damage.Split('d')[1]);
         round.AttackModifier = attacker.AttackModifier;
 
@@ -62,7 +62,7 @@ public class Fight : IFight
                 round.Strike[i] = "Попадание";
             }
 
-            for (var _ = 0; _ < throws; _++)
+            for (var _ = 0; _ < countAttacks; _++)
             {
                 round.Damage[i] += rnd.Next(1, dice + 1);
             }
