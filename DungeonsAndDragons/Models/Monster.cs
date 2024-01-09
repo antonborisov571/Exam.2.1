@@ -2,7 +2,7 @@
 
 namespace Models;
 
-public class Monster
+public class Monster : IEntity
 {
     [Key]
     public int Id { get; set; }

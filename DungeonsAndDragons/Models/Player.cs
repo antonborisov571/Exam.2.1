@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Models;
 
-public class Player
+public class Player : IEntity
 {
     [DisplayName("Имя игрока")]
     public string Name { get; set; }
