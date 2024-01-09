@@ -1,0 +1,22 @@
+﻿@page
+@using Models
+@using System.ComponentModel
+@model UI.Pages.GameModel
+
+<div class=""></div>
+<div class="card">
+	<div class="card-header">Создай своего персонажа</div>
+		<form class="card-body" method="post">
+		@foreach (var property in typeof(Player).GetProperties())
+		{
+			@Html.Label(property.GetCustomAttributes(true)
+			.Select(x => (x as DisplayNameAttribute)?.DisplayName)
+			.FirstOrDefault(name => name != null) ?? property.Name)
+			@Html.Editor(property.Name, new { htmlAttributes = new { @class = "form-control" } });
+			@Html.ValidationMessage(property.Name, new { @class = "text text-danger"})
+			<br/>
+		}
+		<input type="submit" class="btn btn-primary" value="Начать бой!">
+		</form>
+	
+</div>
