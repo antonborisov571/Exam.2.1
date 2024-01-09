@@ -1,0 +1,64 @@
+﻿@page
+@using Models
+@using System.ComponentModel
+@model UI.Pages.GameModel
+
+<div class=""></div>
+<div class="card">
+	<div class="card-header">Создай своего персонажа</div>
+		<form class="card-body" method="post">
+		@foreach (var property in typeof(Player).GetProperties())
+		{
+			@Html.Label(property.GetCustomAttributes(true)
+			.Select(x => (x as DisplayNameAttribute)?.DisplayName)
+			.FirstOrDefault(name => name != null) ?? property.Name)
+			@Html.Editor(property.Name, new { htmlAttributes = new { @class = "form-control" } });
+			@Html.ValidationMessage(property.Name, new { @class = "text text-danger"})
+			<br/>
+		}
+		<input type="submit" class="btn btn-primary" value="Начать бой!">
+		</form>
+</div>
+<div class="card">
+    <h3>Ваш враг:</h3>
+    @if (Model.Monster is not null)
+    {
+        <h3 class="text-danger">@Model.Monster.Name</h3>
+        <div>Количество хитпоинтов: @Model.Monster.HitPoints</div>
+        <div>Модификатор атаки: @Model.Monster.AttackModifier</div>
+        <div>Количество атак за раунд: @Model.Monster.AttackPerRound</div>
+        <div>Урон: @Model.Monster.Damage</div>
+        <div>Модификатор урона: @Model.Monster.DamageModifier</div>
+        <div>Класс доспеха: @Model.Monster.ArmorClass</div>
+    }
+    @if (Model.Result is not null)
+    {
+        int count = 0;
+        @foreach (var action in Model.Result.Rounds)
+        {
+            @if (action.Attacker == Model.Player.Name)
+            {
+                count = count + 1;
+                <h2>
+                    Round @count
+                </h2>
+                <h2 class="text-primary">@action.Attacker</h2>
+            }
+            else
+            {
+                <h2 class="text-danger">@action.Attacker</h2>
+            }
+            @for (int i = 0; i < action.DiceRoll.Length; i++)
+            {
+                <div>На попадание: @action.DiceRoll[i] (+@action.AttackModifier) </div>
+                <div>@action.Strike[i]</div>
+                <div>Урон: @action.Damage[i]</div>
+                <div>Противник: @action.Defender (@action.DefenderHp[i])</div>
+            }
+        }
+
+        <h3> Победил:
+            @Model.Result.Winner
+        </h3>
+    }
+</div>
