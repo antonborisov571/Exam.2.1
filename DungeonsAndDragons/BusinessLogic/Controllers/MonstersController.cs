@@ -19,8 +19,6 @@ public class MonstersController : ControllerBase
     public JsonResult GetRandomMonster()
     {
         var rnd = new Random().Next(1, _dbContext.Monsters.Count());
-        return new JsonResult(_dbContext.Monsters
-            .Where(x => x.Id == rnd)
-            .FirstOrDefault());
+        return new JsonResult(_dbContext.Monsters.ElementAt(rnd));
     }
 }
