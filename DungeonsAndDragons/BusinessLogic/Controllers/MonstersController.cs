@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DatabaseContext;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.Controllers;
 
@@ -17,7 +18,7 @@ public class MonstersController : ControllerBase
     [Route("getrandom")]
     public JsonResult GetRandomMonster()
     {
-        var rnd = new Random().Next(_dbContext.Monsters.Count());
+        var rnd = new Random().Next(1, _dbContext.Monsters.Count());
         return new JsonResult(_dbContext.Monsters
             .Where(x => x.Id == rnd)
             .FirstOrDefault());
